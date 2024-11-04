@@ -12,5 +12,10 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/fonts',
     '@pinia/nuxt',
-  ]
+  ],
+  build: {
+    transpile: [
+      'pinia'
+    ]
+  }
 })
