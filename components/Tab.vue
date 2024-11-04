@@ -31,11 +31,11 @@
       </div>
     </div>
     <div>
-      <Button @click="settleTab" class="block w-full" :class="{'motion-preset-shake' : tabIsEmpty}">Settle Tab</Button>
-      <div>
-        <input type="checkbox" v-model="printToCsv"> Print to CSV
-        <input type="checkbox" v-model="printToPdf"> Print to PDF
+      <div class="py-2 space-y-2">
+        <Checkbox v-model="printToCsv">Print to CSV</Checkbox>
+        <Checkbox v-model="printToPdf">Print to PDF</Checkbox>
       </div>
+      <Button @click="settleTab" class="block w-full" :class="{'motion-preset-shake' : tabIsEmpty}">Settle Tab</Button>
     </div>
   </div>
 </template>
@@ -64,9 +64,10 @@ const settleTab = () => {
     }
 
     if (printToCsv.value == true) {
-      generateCsv(store.openTab)
+      generateCsv(store.openTab, store.tabTotal, sharing.value)
     }
 
+    clearSelections()
     store.clearTab()
   } else {
     tabIsEmpty.value = true
@@ -75,5 +76,13 @@ const settleTab = () => {
   setTimeout(() => {
     tabIsEmpty.value = false
   }, 500)
+}
+
+const clearSelections = () => {
+  printToCsv.value = false
+  printToPdf.value = false
+  sharing.value = 0
+
+  updateSharing()
 }
 </script>

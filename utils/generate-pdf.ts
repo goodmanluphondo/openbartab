@@ -5,6 +5,8 @@ export default function (roundsOfDrinks: [], tabTotal: number, peopleSharing: nu
   const totalDue = formatPrice(tabTotal);
   const totalPerPerson = formatPrice(tabTotal / peopleSharing);
 
+  console.log('totalPerPerson', totalPerPerson);
+
   let y = 30;
 
   doc.setFontSize(12);
@@ -28,16 +30,21 @@ export default function (roundsOfDrinks: [], tabTotal: number, peopleSharing: nu
     });
   });
 
-  y += 10;
-  doc.setFontSize(12);
-  doc.setTextColor(0, 0, 0);
-  doc.text(`Number of people splitting bill: ${peopleSharing}`, 25, y + 10);
+  if (peopleSharing > 1) {
+    y += 10;
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Number of people splitting bill: ${peopleSharing}`, 25, y + 10);
+  }
 
   y += 30;
   doc.setFontSize(14);
   doc.text(`Total Due: ${totalDue}`, 25, y);
   doc.setFontSize(12);
-  doc.text(`${totalPerPerson} per person`, 25, y + 10);
+
+  if (peopleSharing > 1) {
+    doc.text(`${totalPerPerson} per person`, 25, y + 10);
+  }
 
   const currentDate = new Date().toTimeString().slice(0, 8).replace(/:/g, '-');
   const filename = `OpenBarTab_${currentDate}.pdf`;

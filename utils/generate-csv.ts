@@ -1,5 +1,7 @@
-export default function (roundsOfDrinks: []) {
+export default function (roundsOfDrinks: [], tabTotal: number, peopleSharing: number) {
   let csvContent = "Round,Item,Quantity,Price,Total\n";
+  const totalDue = formatPrice(tabTotal);
+  const totalPerPerson = formatPrice(tabTotal / peopleSharing);
 
   roundsOfDrinks.forEach((roundOfDrinks, roundIndex) => {
     roundOfDrinks.forEach((item) => {
@@ -8,6 +10,12 @@ export default function (roundsOfDrinks: []) {
     });
     csvContent += "\n";
   });
+
+  csvContent += `,,,Total Due,${totalDue}\n`
+
+  if (peopleSharing > 1) {
+    csvContent += `,,${peopleSharing},Per Person,${totalPerPerson}\n`
+  }
 
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
