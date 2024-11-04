@@ -22,7 +22,7 @@ export default function (roundsOfDrinks: [], tabTotal: number, peopleSharing: nu
 
   const link = document.createElement("a");
   link.href = url;
-  link.download = `openbartab_${new Date().toISOString().slice(0, 10)}.csv`;
+  link.download = `openbartab_${new Date().toTimeString().slice(0, 8).replace(/:/g, '-')}.csv`;
   link.style.display = "none";
   document.body.appendChild(link);
   link.click();
