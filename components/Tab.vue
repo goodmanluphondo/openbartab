@@ -31,7 +31,7 @@
       </div>
     </div>
     <div>
-      <Button @click="settleTab" class="block w-full">Settle Tab</Button>
+      <Button @click="settleTab" class="block w-full" :class="{'motion-preset-shake' : tabIsEmpty}">Settle Tab</Button>
       <div>
         <input type="checkbox" v-model="printToCsv"> Print to CSV
         <input type="checkbox" v-model="printToPdf"> Print to PDF
@@ -42,6 +42,8 @@
 <script setup lang="ts">
 import {useTabStore} from "~/stores/tab"
 import formatPrice from "../utils/format-price";
+import generatePdf from "~/utils/generate-pdf";
+import generateCsv from "~/utils/generate-csv";
 
 const store = useTabStore()
 const sharing = ref(store.sharing)
@@ -53,7 +55,25 @@ const updateSharing = () => {
   store.setSharing(Number(sharing.value))
 }
 
+const tabIsEmpty = ref(false)
+
 const settleTab = () => {
-  store.clearTab()
+  if (store.openTab?.length > 0) {
+    if (printToPdf.value == true) {
+      generatePdf(store.openTab, store.tabTotal, sharing.value)
+    }
+
+    if (printToCsv.value == true) {
+      generateCsv(store.openTab)
+    }
+
+    store.clearTab()
+  } else {
+    tabIsEmpty.value = true
+  }
+
+  setTimeout(() => {
+    tabIsEmpty.value = false
+  }, 500)
 }
 </script>

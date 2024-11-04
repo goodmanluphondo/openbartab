@@ -24,8 +24,4 @@ const props = defineProps({
 const containsPremix = computed(() => {
   return props.roundOfDrinks.some((drink) => drink.name === "Premix");
 })
-
-onMounted(() => {
-  console.log("RoundOfDrinksCard: mounted", props.roundOfDrinks);
-})
 </script>
